@@ -1,0 +1,19 @@
+import com.santaba.agent.groovyapi.expect.Expect;
+import com.santaba.agent.groovyapi.snmp.Snmp;
+import com.santaba.agent.groovyapi.http.*;
+import com.santaba.agent.groovyapi.jmx.*;
+import org.xbill.DNS.*;
+
+def hostname = hostProps.get("system.hostname");
+userid = hostProps.get("ssh.user");
+passwd = hostProps.get("ssh.pass");
+try{
+    ssh_connection = Expect.open(hostname, userid, passwd, 3);
+    ssh_connection.expect("#|>");
+    ssh_connection.send("exit\n");
+    ssh_connection.expectClose();
+    println("ssh.working=true")
+} catch (exception){
+    println("ssh.working=false")
+}
+return 0;
